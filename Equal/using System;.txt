@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+class Equals
+{
+    static void Main(string[] args)
+    {
+        int countTestCases = Convert.ToInt32(Console.ReadLine());
+
+        for (long k = 0; k  countTestCases; k++)
+        {
+            int n = Convert.ToInt32(Console.ReadLine());
+            string[] input = Console.ReadLine().Split(' ');
+
+            if (n == 0)
+            {
+                Console.WriteLine(0);
+                continue;
+            }         
+
+            Listint chocolates = new Listint();
+            foreach (string s in input)
+            {
+                chocolates.Add(Convert.ToInt32(s));
+            }
+
+            chocolates.Sort();
+
+            int result = GetAllActions(chocolates);
+
+            chocolates[0] -= 1;
+            result = Math.Min(result, GetAllActions(chocolates) + 1);
+
+            chocolates[0] -= 1;
+            result = Math.Min(result, GetAllActions(chocolates) + 1);
+
+            chocolates[0] -= 3;
+            result = Math.Min(result, GetAllActions(chocolates) + 1);
+
+            Console.WriteLine(result);
+        }
+    }
+
+    static int GetAllActions(Listint chocolates)
+    {
+        chocolates = chocolates.ToList();
+
+        int result = 0;
+        for (int i = 0; i  chocolates.Count - 1; i++)
+        {
+            if (chocolates[i] == chocolates[i + 1])
+                continue;
+
+            int diff = chocolates[i + 1] - chocolates[i];
+
+            chocolates[i + 1] -= diff;
+
+            result += GetActions(diff);
+        }
+
+        return result;
+    }
+
+    static int GetActions(int diff)
+    {
+        int result = diff  5;
+        diff %= 5;
+
+        result += diff  2;
+        diff %= 2;
+
+        result += diff;
+
+        return result;
+    }
+}
